@@ -8,9 +8,9 @@ import { useFilter } from "../../context";
 
 export const ProductList = () => {
 
-const {productList} = useFilter();
+  const {products, initialProductList} = useFilter();
   const [show, setShow] = useState(false);
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   // reads the query in search bar
   const search = useLocation().search;
   // givs option to access each term
@@ -22,10 +22,11 @@ const {productList} = useFilter();
     async function fetchProducts(){
       const response = await fetch(`http://localhost:8000/products?name_like=${searchTerm ? searchTerm : ""}`);
       const data = await response.json();
-      setProducts(data);
+      // setProducts(data);
+      initialProductList(data);
     }
     fetchProducts();
-  }, [])
+  }, [searchTerm])
 
   return (
     <main>
