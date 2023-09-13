@@ -7,9 +7,9 @@ export async function login(authDetail){
         body: JSON.stringify(authDetail)
     }
     // access detail
-    const response = await fetch("http://localhost:8000/login", requestOptions);
+    const response = await fetch(`${process.env.REACT_APP_HOST}/login`, requestOptions);
     if(!response.ok){
-        throw { message: response.statusText, status: response.status };
+        throw new Error({ message: response.statusText, status: response.status });
     }
     const data = await response.json();
     
@@ -29,10 +29,10 @@ export async function register(authDetail){
         body: JSON.stringify(authDetail)
     }
     // post request to fetch register information
-    const response = await fetch("http://localhost:8000/register", requestOptions);
+    const response = await fetch(`${process.env.REACT_APP_HOST}/register`, requestOptions);
     
     if(!response.ok){
-        throw { message: response.statusText, status: response.status };
+        throw new Error({ message: response.statusText, status: response.status });
     }const data = await response.json();
     
     if (data.accessToken){
