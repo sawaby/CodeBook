@@ -1,16 +1,21 @@
 
+// hooks
 import { useEffect, useState } from "react";
+import { useTitle } from '../../hooks/useTitle';
+import { useLocation } from "react-router-dom";
+// components
 import { ProductCard } from "../../components";
 import { FilterBar} from './components/FilterBar';
-import { useLocation } from "react-router-dom";
-import { useTitle } from '../../hooks/useTitle';
+// other files
 import { useFilter } from "../../context";
+import { getProductList } from "../../services";
+import { toast } from "react-toastify";
 
 export const ProductList = () => {
 
   const {products, initialProductList} = useFilter();
   const [show, setShow] = useState(false);
-  // const [products, setProducts] = useState([]);
+
   // reads the query in search bar
   const search = useLocation().search;
   // givs option to access each term
@@ -20,10 +25,13 @@ export const ProductList = () => {
 
   useEffect(() => {
     async function fetchProducts(){
-      const response = await fetch(`http://localhost:8000/products?name_like=${searchTerm ? searchTerm : ""}`);
-      const data = await response.json();
-      // setProducts(data);
-      initialProductList(data);
+      try{
+        const data = await getProductList(searchTerm);
+
+        initialProductList(data);
+      }catch(error){
+        toast.error(error.message);
+      }
     }
     fetchProducts();
   }, [searchTerm])
