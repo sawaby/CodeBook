@@ -11,11 +11,13 @@ export const Register = () => {
         event.preventDefault();
 
         try{
+          // reading user login information
           const authDetail = {
             name: event.target.name.value,
             email: event.target.email.value,
             password: event.target.password.value,
           }
+          // call register and send user information
           const data = await register(authDetail);
           data.accessToken ? navigate("/products") : toast.error(data);
         }catch(error){
